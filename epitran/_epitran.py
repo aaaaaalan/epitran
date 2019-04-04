@@ -20,8 +20,8 @@ logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
 class Epitran(object):
     """Unified interface for IPA transliteration/transcription"""
-    special = {'eng-Latn': FliteLexLookup,
-               'cmn-Hans': Epihan,
+    special = {'eng-Latn': FliteLexLookup,                                               # 英文 转 IPA 库
+               'cmn-Hans': Epihan,                                                       # 简体中文 转 IPA 库
                'cmn-Hant': EpihanTraditional}
 
     def __init__(self, code, preproc=True, postproc=True, ligatures=False, cedict_file=None,

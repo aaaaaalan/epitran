@@ -40,6 +40,7 @@ class Backoff(object):
         tr_list = []
         while token:
             is_outside_lang = True
+            # 遍历类
             for dia, lang in zip(self.dias, self.langs):
                 source = ''
                 while True:

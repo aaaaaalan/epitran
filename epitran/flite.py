@@ -55,7 +55,7 @@ class Flite(object):
         with open(arpabet, 'rb') as f:
             reader = csv.reader(f, encoding='utf-8')
             for arpa, ipa in reader:
-                arpa_map[arpa] = ipa
+                arpa_map[arpa] = ipa                                                 # arpabet.csv 中，为 arpa,ipa对，可参照wikipedia
         return arpa_map
 
     def normalize(self, text):
@@ -85,10 +85,13 @@ class Flite(object):
                               standard IPA
         """
         text = unicodedata.normalize('NFC', text)
+        print('text: ', text)
         acc = []
         for chunk in self.chunk_re.findall(text):
+            print('chunk: ', chunk)
             if self.letter_re.match(chunk):
-                acc.append(self.english_g2p(chunk))
+                acc.append(self.english_g2p(chunk))            # core function: self.english_g2p
+                print('self.english_g2p: ', self.english_g2p(chunk))
             else:
                 acc.append(chunk)
         text = ''.join(acc)
@@ -194,10 +197,13 @@ class FliteLexLookup(Flite):
         return arpa_text[1:-1].split(' ')
 
     def english_g2p(self, text):
+        print('FliteLexLookup: text ', text)
         text = self.normalize(text).lower()
         try:
             arpa_text = subprocess.check_output(['lex_lookup', text])
+            print('arpa_text: ', arpa_text)
             arpa_text = arpa_text.decode('utf-8')
+            print('arpa_text: utf-8: ', arpa_text)
         except OSError:
             logging.warning('lex_lookup (from flite) is not installed.')
             arpa_text = ''

@@ -60,7 +60,7 @@ class Rules(object):
                 line = self._sub_symbols(line)
                 r = re.match(r'(\S+)\s*->\s*(\S+)\s*/\s*(\S*)\s*[_]\s*(\S*)', line)
                 try:
-                    a, b, X, Y = r.groups()
+                    a, b, X, Y = r.groups()                                                          # 以 -> / _ 分为四部分
                 except AttributeError:
                     raise DatafileError('Line {}: "{}" cannot be parsed.'.format(i + 1, line))
                 X, Y = X.replace('#', '^'), Y.replace('#', '$')
@@ -88,10 +88,10 @@ class Rules(object):
         regexp = re.compile(left)
 
         def rewrite(m):
-            d = {k: none2str(v) for k, v in m.groupdict().items()}
-            return '{}{}{}'.format(d['X'], b, d['Y'])
+            d = {k: none2str(v) for k, v in m.groupdict().items()}                                    # d = {'X': '', 'a': '', 'Y': ''}
+            return '{}{}{}'.format(d['X'], b, d['Y'])                                                 # rewrite: a 替换为 b, X和Y为词语的前后缀
 
-        return lambda w: regexp.sub(rewrite, w, re.U)
+        return lambda w: regexp.sub(rewrite, w, re.U)                                                 # 返回一个函数，在epitran.py 中调用apply输入参数 text
 
     def apply(self, text):
         """Apply rules to input text
@@ -103,5 +103,5 @@ class Rules(object):
             unicode: output text (e.g. IPA)
         """
         for rule in self.rules:
-            text = rule(text)
+            text = rule(text)                                                                         # 遍历了一个函数列表self.rules
         return text

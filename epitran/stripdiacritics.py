@@ -32,7 +32,7 @@ class StripDiacritics(object):
         return diacritics
 
     def process(self, word):
-        """Remove diacritics from an input string
+        """Remove diacritics(变音符号) from an input string
 
         Args:
             word (unicode): Unicode IPA string
@@ -41,7 +41,7 @@ class StripDiacritics(object):
             unicode: Unicode IPA string with specified diacritics
             removed
         """
-        word = unicodedata.normalize('NFD', word)
+        word = unicodedata.normalize('NFD', word)  # NFD Normalize from D - canonical decomposition 规范分解 
         for diacritic in self.diacritics:
             word = word.replace(diacritic, '')
         return word

@@ -43,7 +43,7 @@ class Epihan(object):
         if not cedict_file:
             raise MissingData('Please specify a location ' +
                               'for the CC-CEDict file.')
-        rules_file = os.path.join('data', 'rules', rules_file)
+        rules_file = os.path.join('data', 'rules', rules_file)                         # pinyin_to_ipa
         rules_file = pkg_resources.resource_filename(__name__, rules_file)
         self.cedict = cedict.CEDictTrie(cedict_file)
         self.rules = rules.Rules([rules_file])
@@ -74,14 +74,14 @@ class Epihan(object):
         Returns:
             unicode: IPA string
         """
-        tokens = self.cedict.tokenize(text)
-        ipa_tokens = []
+        tokens = self.cedict.tokenize(text)                        # 分词结果，采用trie方法进行分词
+        ipa_tokens = []                                            # 对应的ipa
         for token in tokens:
             if token in self.cedict.hanzi:
-                (pinyin, _) = self.cedict.hanzi[token]
-                pinyin = u''.join(pinyin).lower()
-                ipa = self.rules.apply(pinyin)
-                ipa_tokens.append(ipa.replace(u',', u''))
+                (pinyin, _) = self.cedict.hanzi[token]             # 根据cedict字典，中文转拼音
+                pinyin = u''.join(pinyin).lower()                  # 拼音
+                ipa = self.rules.apply(pinyin)                     # pinyin转ipa
+                ipa_tokens.append(ipa.replace(u',', u''))          # 添加到ipa_tokens列表
             else:
                 if normpunc:
                     token = self.normalize_punc(token)
